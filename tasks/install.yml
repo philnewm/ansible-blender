@@ -1,0 +1,46 @@
+---
+
+- name: Download blender tar-ball
+  become: true
+  ansible.builtin.get_url:
+    url: https://{{ mirror }}/blender/release/Blender{{ version_short }}/blender-{{ version_long }}-linux-{{ architecture }}.tar.xz
+    dest: /opt/
+
+- name: Create destination directory
+  become: true
+  ansible.builtin.file:
+    path: "{{ install_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Extract tar-ball
+  become: true
+  ansible.builtin.unarchive:
+    src: "/opt/blender-{{ version_long }}-linux-{{ architecture }}.tar.xz"
+    dest: "{{ install_path }}"
+    remote_src: true
+    extra_opts:
+      - "--strip-components=1"
+
+- name: Cleanup tar-ball
+  become: true
+  ansible.builtin.file:
+    path: "/opt/blender-{{ version_long }}-linux-{{ architecture }}.tar.xz"
+    state: absent
+
+- name: Create symlink to executable
+  become: true
+  ansible.builtin.file:
+    src: "{{ install_path }}/blender"
+    dest: /usr/local/bin/blender
+    state: link
+    force: true
+
+- name: Copy launcher file
+  become: true
+  ansible.builtin.copy:
+    src: "{{ install_path }}/blender.desktop"
+    dest: "/usr/share/applications/blender.desktop"
+    remote_src: yes
+
+...

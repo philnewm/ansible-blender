@@ -8,4 +8,13 @@
 - name: Gather package facts
   ansible.builtin.package_facts:
 
+- name: Install blender
+  when: '"blender" not in ansible_facts.packages'
+  ansible.builtin.include_tasks:
+    file: install.yml 
+
+- name: Configure blender
+  ansible.builtin.include_tasks:
+    file: config.yml 
+
 ...

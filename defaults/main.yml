@@ -4,4 +4,15 @@
 
 state: present
 
+mirror: "ftp.halifax.rwth-aachen.de"
+version:
+  major: 4
+  minor: 2
+  patch: 3
+version_long: "{{ version.major }}.{{ version.minor }}.{{ version.patch }}"
+version_short: "{{ version.major }}.{{ version.minor }}"
+architecture: "x64"
+
+install_path: "/opt/blender_{{ version_long }}-{{ architecture }}"
+
 ...
