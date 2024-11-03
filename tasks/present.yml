@@ -4,17 +4,20 @@
 # INFO larger roles should only use **include_tasks** here
 
 
-# INFO This task may be obsolete for your use-case
-- name: Gather package facts
-  ansible.builtin.package_facts:
+- name: Check if present
+  ansible.builtin.command:
+    cmd: "blender --version"
+  register: blender_command
+  changed_when: false
+  failed_when: blender_command.rc not in [0, 2]
 
 - name: Install blender
-  when: '"blender" not in ansible_facts.packages'
+  when: blender_command.rc != 0
   ansible.builtin.include_tasks:
     file: install.yml 
 
 - name: Configure blender
   ansible.builtin.include_tasks:
-    file: config.yml 
+    file: config.yml
 
 ...
