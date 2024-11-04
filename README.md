@@ -6,6 +6,9 @@ Role description
 
 * https://blender.stackexchange.com/questions/188043/python-autocompletion
 * https://docs.blender.org/api/current/info_advanced_blender_as_bpy.html
+* https://studio.blender.org/tools/td-guide/python
+* https://projects.blender.org/blender/blender/issues/126686
+* https://pypi.org/project/blender-stubs/
 
 This role includes a vagrant based molecule testing setup as a submodule at `molecule/default`
 

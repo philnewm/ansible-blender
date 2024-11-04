@@ -1,6 +1,27 @@
 import bpy
+from bpy.types import Object
+from mathutils import Vector
 
-bpy.context.preferences.view.show_splash = False
+# Create a cube
+bpy.ops.mesh.primitive_cube_add(size=2, location=(0, 0, 0))
+cube: Object | None = bpy.context.active_object  # Get the active object (the cube)
+
+# Create a sphere
+bpy.ops.mesh.primitive_uv_sphere_add(radius=1, location=(3, 0, 0))
+sphere: Object | None = bpy.context.active_object  # Get the active object (the sphere)
+
+# Create a monkey (Suzanne)
+bpy.ops.mesh.primitive_monkey_add(size=1, location=(6, 0, 0))
+monkey: Object | None = bpy.context.active_object  # Get the active object (the monkey)
+
+# Output names and positions of the created objects
+for obj in [cube, sphere, monkey]:
+    name: str = obj.name
+    location: Vector = obj.location
+    print(f"Object Name: {name}, Position: {location}")
+
+print(bpy.context.preferences.themes['Default'].view_3d.vertex_size)
+
 # bpy.context.preferences.view.show_developer_ui = False
 # bpy.context.preferences.view.show_tooltips_python = False
 # bpy.context.preferences.view.ui_line_width = "AUTO"

@@ -1,0 +1,33 @@
+---
+
+# Add to gnome favorites
+
+- name: Install dependencies
+  become: true
+  when: item not in ansible_facts.packages
+  ansible.builtin.package:
+    name: python3-psutil
+    state: present
+
+- name: Get current favorite apps
+  community.general.dconf:
+    key: /org/gnome/shell/favorite-apps
+    state: read
+  register: current_favorites
+
+- name: Clean favorites
+  ansible.builtin.set_fact:
+    gnome_favorites: "{{ current_favorites.value | from_yaml | default([], true) }}"
+
+- name: Assign blender launcher name
+  ansible.builtin.set_fact:
+    launcher_name: ["{{ launcher[ansible_os_family] }}"]
+
+- name: Add meld to favorites
+  when: launcher_name[0] not in gnome_favorites
+  community.general.dconf:
+    key: /org/gnome/shell/favorite-apps
+    value: "{{ gnome_favorites + launcher_name }}"
+    state: present
+
+...

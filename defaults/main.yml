@@ -3,6 +3,12 @@
 # Variables for ansible-role-template
 
 state: present
+default_version: true
+gnome_favorite: true
+
+launcher:
+  "RedHat": blender.desktop
+  "Debian": blender.desktop
 
 mirror: "ftp.halifax.rwth-aachen.de"
 version:
@@ -31,7 +37,6 @@ settings:
   "bpy.context.preferences.themes['Default'].view_3d.space.gradients.gradient.hsv": "(0.11111114919185638, 0.11538466811180115, 0.10196079313755035)"
   "bpy.context.preferences.edit.undo_steps": 512
   "bpy.context.preferences.filepaths.save_version": 10
-  "bpy.data.scenes['Scene'].tool_settings.lock_object_mode": False
 
 addons:
   - "node_wrangler"

@@ -30,6 +30,7 @@
 
 - name: Create symlink to executable
   become: true
+  when: default_version
   ansible.builtin.file:
     src: "{{ install_path }}/blender"
     dest: /usr/local/bin/blender
