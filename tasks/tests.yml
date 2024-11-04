@@ -2,4 +2,33 @@
 
 # tests to verify role functionality
 
+
+- name: Check for blender install
+  ansible.builtin.stat:
+    path: "{{ install_path }}"
+  register: blender_path
+
+- name: test install path
+  ansible.builtin.assert:
+    that:
+      - blender_path.isdir
+
+- name: Check if blender is available
+  ansible.builtin.command:
+    cmd: "blender --version"
+  register: blender_command
+  changed_when: false
+
+- name: test blender command
+  ansible.builtin.assert:
+    that:
+      - blender_command.rc == 0
+
+- name: blender symlink to expected version
+  ansible.builtin.stat:
+    path: /usr/local/bin/blender
+  register: blender_symlink
+
+# TODO test symlink for existents and expected version
+
 ...
