@@ -4,7 +4,6 @@
 
 - name: Install dependencies
   become: true
-  when: item not in ansible_facts.packages
   ansible.builtin.package:
     name: python3-psutil
     state: present
@@ -23,7 +22,7 @@
   ansible.builtin.set_fact:
     launcher_name: ["{{ launcher[ansible_os_family] }}"]
 
-- name: Add meld to favorites
+- name: Add blender to favorites
   when: launcher_name[0] not in gnome_favorites
   community.general.dconf:
     key: /org/gnome/shell/favorite-apps

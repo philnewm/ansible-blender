@@ -9,7 +9,7 @@
   register: blender_path
 
 - name: Install blender
-  when: not blender_path.stat.isdir
+  when: not blender_path.stat.exists
   ansible.builtin.include_tasks:
     file: install.yml 
 
