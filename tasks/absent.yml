@@ -3,6 +3,25 @@
 # Uninstall and cleanup tasks
 
 
+- name: Remove install directory
+  become: true
+  ansible.builtin.file:
+    path: "{{ install_path }}"
+    state: absent
+
+- name: Remove symlink
+  become: true
+  when: default_version
+  ansible.builtin.file:
+    path: /usr/local/bin/blender
+    state: absent
+
+- name: Remove launcher file
+  become: true
+  ansible.builtin.file:
+    path: "/usr/share/applications/blender.desktop"
+    state: absent
+
 - name: Remove unused dependencies
   become: true
   ansible.builtin.package:

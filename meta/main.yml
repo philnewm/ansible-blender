@@ -2,8 +2,8 @@
 
 galaxy_info:
   role_name: blender
-  author: author_name
-  description: ansible-role-template description
+  author: philnewm
+  description: Install and configure blender.
   license: some_license
   min_ansible_version: "2.1"
   platforms:

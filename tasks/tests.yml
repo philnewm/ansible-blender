@@ -65,6 +65,27 @@
     fail_msg: "Blender desktop file does not exist"
     quiet: true
 
-# TODO test settings
+- name: Query settings
+  loop: "{{ settings.keys() }}"
+  ansible.builtin.shell:
+    cmd: |
+      blender --background --python-expr "
+      import bpy;
+      print({{ item }})
+      " | sed -n '1p'
+  args:
+    executable: /bin/bash
+  register: settings_query
+  changed_when: false
+
+- name: test settings
+  loop: "{{ settings_query.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+  ansible.builtin.assert:
+    that: 
+      - settings[item.item] | from_yaml | string == item.stdout
+    fail_msg: "Expected {{ settings[item.item] }} but got {{ item.stdout }} for {{ item.item }}"
+    quiet: true
 
 ...
