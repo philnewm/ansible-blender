@@ -22,4 +22,9 @@
   ansible.builtin.include_tasks:
     file: favorite.yml
 
+- name: Add python dev environment
+  when: pipeline_dev
+  ansible.builtin.include_tasks:
+    file: pipeline_dev.yml
+
 ...

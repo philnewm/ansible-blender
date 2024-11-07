@@ -78,7 +78,7 @@
   register: settings_query
   changed_when: false
 
-- name: test settings
+- name: Test settings
   loop: "{{ settings_query.results }}"
   loop_control:
     label: "{{ item.item }}"
@@ -87,5 +87,27 @@
       - settings[item.item] | from_yaml | string == item.stdout
     fail_msg: "Expected {{ settings[item.item] }} but got {{ item.stdout }} for {{ item.item }}"
     quiet: true
+
+# TODO test if it works for list of addons
+- name: Query enabled addons
+  ansible.builtin.shell:
+    cmd: |
+      blender --background --python-expr "
+      import bpy;
+      print(bpy.context.preferences.addons.keys())
+      " | sed -n '1p'
+  changed_when: false
+  args:
+    executable: /bin/bash
+  register: enabled_addons
+
+- name: Test enable addons
+  loop: "{{ addons }}"
+  loop_control:
+    label: "{{ item }}"
+  ansible.builtin.assert:
+    that:
+      - item in enabled_addons.stdout | to_json
+    fail_msg: "Failed to find addon {{ item }}"
 
 ...

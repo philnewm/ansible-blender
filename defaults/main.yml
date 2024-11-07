@@ -5,6 +5,7 @@
 state: present
 default_version: true
 gnome_favorite: true
+pipeline_dev: true
 
 launcher:
   "RedHat": blender.desktop
@@ -20,6 +21,9 @@ version_short: "{{ version.major }}.{{ version.minor }}"
 architecture: "x64"
 
 install_path: "/opt/blender_{{ version_long }}-{{ architecture }}"
+python_version: "3.11"
+builtin_python_path: "{{ install_path }}/{{ version_short }}/python/bin/python{{ python_version }}"
+pip_path: "{{ install_path }}/{{ version_short }}/python/lib/python{{ python_version }}/site-packages/pip{{ python_version }}"
 
 settings:
   "bpy.context.preferences.view.show_splash": False
@@ -40,5 +44,9 @@ settings:
 
 addons:
   - "node_wrangler"
+
+python_modules:
+  - bpy
+  - fake-bpy-module
 
 ...

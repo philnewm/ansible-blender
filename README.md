@@ -9,6 +9,7 @@ Role description
 * https://studio.blender.org/tools/td-guide/python
 * https://projects.blender.org/blender/blender/issues/126686
 * https://pypi.org/project/blender-stubs/
+* https://github.com/ansible/ansible/issues/72220
 
 This role includes a vagrant based molecule testing setup as a submodule at `molecule/default`
 

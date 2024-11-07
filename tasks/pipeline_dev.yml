@@ -1,0 +1,17 @@
+---
+
+# pipeline development setup
+
+- name: Install pip for blender python
+  ansible.builtin.command:
+    cmd: "{{ builtin_python_path }} -m ensurepip --upgrade"
+
+# TODO fix for actual pip location
+# Try /opt/blender_4.2.3-x64/4.2/python/bin/python3.11 -m pip inspect
+# - name: Install blender python modules
+#   loop: "{{ python_modules }}"
+#   ansible.builtin.pip:
+#     executable: "{{ pip_path }}"
+#     name: "{{ item }}"
+
+...
