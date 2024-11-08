@@ -19,10 +19,6 @@ This role includes a vagrant based molecule testing setup as a submodule at `mol
 📦 ansible-blender
  ┣ 📂 defaults
  ┃ ┗ 📜 main.yml
- ┣ 📂 files
- ┃ ┗ 📜 file_placeholder.yml
- ┣ 📂 handlers
- ┃ ┗ 📜 main.yml
  ┣ 📂 meta
  ┃ ┗ 📜 main.yml
  ┣ 📂 molecule
@@ -34,8 +30,6 @@ This role includes a vagrant based molecule testing setup as a submodule at `mol
  ┃ ┣ 📜 dependencies.yml
  ┃ ┣ 📜 absent.yml
  ┃ ┗ 📜 init.yml
- ┣ 📂 templates
- ┃ ┗ ⛩️ template.j2
  ┣ 📂 vars
  ┃ ┗ 📜 main.yml
  ┗ 🗒️ README.md
@@ -43,7 +37,7 @@ This role includes a vagrant based molecule testing setup as a submodule at `mol
 
 ```
 
-Describe and explain role structure. 
+Describe and explain role structure.
 
 ## Requirements
 

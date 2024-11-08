@@ -23,7 +23,7 @@ architecture: "x64"
 install_path: "/opt/blender_{{ version_long }}-{{ architecture }}"
 python_version: "3.11"
 builtin_python_path: "{{ install_path }}/{{ version_short }}/python/bin/python{{ python_version }}"
-pip_path: "{{ install_path }}/{{ version_short }}/python/lib/python{{ python_version }}/site-packages/pip{{ python_version }}"
+pip_path: "{{ install_path }}/{{ version_short }}/python/bin/pip{{ python_version }}"
 
 settings:
   "bpy.context.preferences.view.show_splash": False
@@ -48,5 +48,15 @@ addons:
 python_modules:
   - bpy
   - fake-bpy-module
+
+driver_check:
+  "Advanced Micro Devices, Inc. [AMD/ATI]": "rocm-smi --json --showdriverversion | jq -r '.system[\"Driver version\"]'"
+  "NVIDIA Corporation": "nvidia-smi"
+  "Intel Corporation": "not implemented"
+
+cycles_compute_device:
+  "Advanced Micro Devices, Inc. [AMD/ATI]": "'HIP'"
+  "NVIDIA Corporation": "'OPTIX'"
+  "Intel Corporation": "'ONEAPI'"
 
 ...

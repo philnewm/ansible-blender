@@ -2,16 +2,28 @@
 
 # pipeline development setup
 
-- name: Install pip for blender python
-  ansible.builtin.command:
-    cmd: "{{ builtin_python_path }} -m ensurepip --upgrade"
+- name: Get blender pip
+  ansible.builtin.stat:
+    path: "{{ pip_path }}"
+  register: blender_pip
 
-# TODO fix for actual pip location
-# Try /opt/blender_4.2.3-x64/4.2/python/bin/python3.11 -m pip inspect
-# - name: Install blender python modules
-#   loop: "{{ python_modules }}"
-#   ansible.builtin.pip:
-#     executable: "{{ pip_path }}"
-#     name: "{{ item }}"
+- name: Download get-pip.py script
+  when: not blender_pip.stat.exists
+  ansible.builtin.get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: /tmp/get-pip.py
+
+- name: Install pip with get-pip.py
+  become: true
+  ansible.builtin.command:
+    cmd: "{{ builtin_python_path }} /tmp/get-pip.py"
+  args:
+    creates: "{{ pip_path }}"
+
+- name: Install blender python modules
+  loop: "{{ python_modules }}"
+  ansible.builtin.pip:
+    executable: "{{ pip_path }}"
+    name: "{{ item }}"
 
 ...
