@@ -41,6 +41,7 @@ settings:
   "bpy.context.preferences.themes['Default'].view_3d.space.gradients.gradient.hsv": "(0.11111114919185638, 0.11538466811180115, 0.10196079313755035)"
   "bpy.context.preferences.edit.undo_steps": 512
   "bpy.context.preferences.filepaths.save_version": 10
+  "bpy.context.preferences.addons['cycles'].preferences.compute_device_type": "'{{ cycles_compute_device }}'"
 
 addons:
   - "node_wrangler"
@@ -50,11 +51,11 @@ python_modules:
   - fake-bpy-module
 
 driver_check:
-  "Advanced Micro Devices, Inc. [AMD/ATI]": "rocm-smi --json --showdriverversion | jq -r '.system[\"Driver version\"]'"
-  "NVIDIA Corporation": "nvidia-smi"
-  "Intel Corporation": "not implemented"
+  "Advanced Micro Devices, Inc. [AMD/ATI]": "libamdocl"
+  "NVIDIA Corporation": "libnvidia-opencl"
+  "Intel Corporation": "intel-opencl-icd"
 
-cycles_compute_device:
+cycles_compute_device_type:
   "Advanced Micro Devices, Inc. [AMD/ATI]": "'HIP'"
   "NVIDIA Corporation": "'OPTIX'"
   "Intel Corporation": "'ONEAPI'"

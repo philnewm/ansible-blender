@@ -110,4 +110,7 @@
       - item in enabled_addons.stdout | to_json
     fail_msg: "Failed to find addon {{ item }}"
 
+
+# TODO test in stalled python packages
+# /opt/blender_4.2.3-x64/4.2/python/bin/pip3.11 list | awk '{if(NR>2) print $1}'
 ...
