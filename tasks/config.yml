@@ -1,26 +1,8 @@
 ---
 
-# TODO move to dedicated task file
-- name: Get GPU
-  become: true
-  ansible.builtin.shell:
-    cmd: "lshw -C display | grep 'vendor' | awk -F ': ' '{print $2}'"
-  changed_when: false
-  register: gpu_vendor
-  failed_when: gpu_vendor.rc != 0
-
-# - name: Get driver
-#   when: gpu_vendor.stdout in driver_check.keys()
-#   ansible.builtin.shell:
-#     cmd: "ldconfig -p | grep -i '{{ driver_check[{{ gpu_vendor.stdout }}]'"
-#   changed_when: false
-#   register: gpu_driver
-#   failed_when: gpu_driver.rc != 0
-
-# WARNING untested
-- name: Set compute device
-  ansible.builtin.set_fact:
-    cycles_compute_device: "{{ cycles_compute_device_type[gpu_vendor.stdout] | default('NONE')}}"
+- name: Include gpu query
+  ansible.builtin.include_tasks:
+    file: gpu_query.yml
 
 - name: Query settings
   loop: "{{ settings.keys() }}"

@@ -65,6 +65,10 @@
     fail_msg: "Blender desktop file does not exist"
     quiet: true
 
+- name: Include gpu query
+  ansible.builtin.include_tasks:
+    file: gpu_query.yml
+
 - name: Query settings
   loop: "{{ settings.keys() }}"
   ansible.builtin.shell:
@@ -88,7 +92,6 @@
     fail_msg: "Expected {{ settings[item.item] }} but got {{ item.stdout }} for {{ item.item }}"
     quiet: true
 
-# TODO test if it works for list of addons
 - name: Query enabled addons
   ansible.builtin.shell:
     cmd: |
@@ -109,7 +112,7 @@
     that:
       - item in enabled_addons.stdout | to_json
     fail_msg: "Failed to find addon {{ item }}"
-
+    quiet: true
 
 - name: Get pip executable
   ansible.builtin.stat:
@@ -121,10 +124,11 @@
     that:
       - pip_result.stat.exists
     fail_msg: "Pip executable not found at {{ pip_path }}"
+    quiet: true
 
 - name: Get installed blender python packages
   ansible.builtin.shell:
-    cmd: "{{ pip_path }} | awk '{if(NR>2) print $1}'"
+    cmd: "{{ pip_path }} list | awk '{if(NR>2) print $1}'"
   register: python_packages
   changed_when: false
   failed_when: python_packages.rc != 0
@@ -135,5 +139,6 @@
     that:
       - item in python_packages.stdout_lines
     fail_msg: "Unable to find {{ item }} in pip packages for blender."
+    quiet: true
 
 ...

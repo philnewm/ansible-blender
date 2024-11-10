@@ -45,6 +45,7 @@ settings:
 
 addons:
   - "node_wrangler"
+  - "cycles"
 
 python_modules:
   - bpy
