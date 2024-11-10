@@ -1,5 +1,6 @@
 ---
 
+# TODO move to dedicated task file
 - name: Get GPU
   become: true
   ansible.builtin.shell:
@@ -16,6 +17,7 @@
 #   register: gpu_driver
 #   failed_when: gpu_driver.rc != 0
 
+# WARNING untested
 - name: Set compute device
   ansible.builtin.set_fact:
     cycles_compute_device: "{{ cycles_compute_device_type[gpu_vendor.stdout] | default('NONE')}}"

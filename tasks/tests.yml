@@ -111,6 +111,29 @@
     fail_msg: "Failed to find addon {{ item }}"
 
 
-# TODO test in stalled python packages
-# /opt/blender_4.2.3-x64/4.2/python/bin/pip3.11 list | awk '{if(NR>2) print $1}'
+- name: Get pip executable
+  ansible.builtin.stat:
+    path: "{{ pip_path }}"
+  register: pip_result
+
+- name: Test pip path
+  ansible.builtin.assert:
+    that:
+      - pip_result.stat.exists
+    fail_msg: "Pip executable not found at {{ pip_path }}"
+
+- name: Get installed blender python packages
+  ansible.builtin.shell:
+    cmd: "{{ pip_path }} | awk '{if(NR>2) print $1}'"
+  register: python_packages
+  changed_when: false
+  failed_when: python_packages.rc != 0
+
+- name: Test installed blender python packages
+  loop: "{{ python_modules }}"
+  ansible.builtin.assert:
+    that:
+      - item in python_packages.stdout_lines
+    fail_msg: "Unable to find {{ item }} in pip packages for blender."
+
 ...
