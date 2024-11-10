@@ -4,14 +4,7 @@
 
 Role description
 
-* https://blender.stackexchange.com/questions/188043/python-autocompletion
-* https://docs.blender.org/api/current/info_advanced_blender_as_bpy.html
-* https://studio.blender.org/tools/td-guide/python
-* https://projects.blender.org/blender/blender/issues/126686
-* https://pypi.org/project/blender-stubs/
-* https://github.com/ansible/ansible/issues/72220
-
-This role includes a vagrant based molecule testing setup as a submodule at `molecule/default`
+This role includes a vagrant based molecule testing setup as a submodule at `molecule/`
 
 ## Structure
 
@@ -27,9 +20,12 @@ This role includes a vagrant based molecule testing setup as a submodule at `mol
  ┣ 📂 tasks
  ┃ ┣ 📜 main.yml
  ┃ ┣ 📜 present.yml
- ┃ ┣ 📜 dependencies.yml
+ ┃ ┣ 📜 config.yml
+ ┃ ┣ 📜 gpu_query.yml
+ ┃ ┣ 📜 favorite.yml
+ ┃ ┣ 📜 pipeline_dev.yml
  ┃ ┣ 📜 absent.yml
- ┃ ┗ 📜 init.yml
+ ┃ ┗ 📜 tests.yml
  ┣ 📂 vars
  ┃ ┗ 📜 main.yml
  ┗ 🗒️ README.md
