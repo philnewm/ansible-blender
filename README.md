@@ -89,3 +89,20 @@ molecule/default/verify.yml merge=ours
 ## Changes to role template
 
 * Add github action that flags empty directories on release creation
+
+## Blender launcher local build
+
+* dependency: python3-devel, xcb-util-image, xcb-util-keysyms, xcb-util-wm, xcb-util-renderutil, python3-xlib  # TODO test if epel repo is actually required
+* python dependencies: sip, 
+* git clone -b v2.2.0 https://github.com/Victor-IX/Blender-Launcher-V2
+* change to repo root
+* python -m ensurepip
+* python -m pip install virtualenv
+* python -m virtualenv --clear --download .venv
+* source .venv/bin/activate
+* pip install -e .
+* python build_style.py
+* cd scripts && sh build_linux.sh
+* sudo cp ../../extras/blenderlauncher.desktop /usr/share/applications/
+* sudo cp Blender\ Launcher /usr/bin/blenderlauncher
+* find icon
