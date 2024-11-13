@@ -93,7 +93,7 @@ molecule/default/verify.yml merge=ours
 ## Blender launcher local build
 
 * dependency: python3-devel, xcb-util-image, xcb-util-keysyms, xcb-util-wm, xcb-util-renderutil, python3-xlib  # TODO test if epel repo is actually required
-* python dependencies: sip, 
+* python dependencies: sip
 * git clone -b v2.2.0 https://github.com/Victor-IX/Blender-Launcher-V2
 * change to repo root
 * python -m ensurepip

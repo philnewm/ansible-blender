@@ -3,7 +3,7 @@
 - name: Download blender tar-ball
   become: true
   ansible.builtin.get_url:
-    url: https://{{ mirror }}/blender/release/Blender{{ version_short }}/blender-{{ version_long }}-linux-{{ architecture }}.tar.xz
+    url: "https://download.blender.org/release/Blender{{ version_short }}/blender-{{ version_long }}-linux-{{ architecture }}.tar.xz"
     dest: /opt/
 
 - name: Create destination directory
