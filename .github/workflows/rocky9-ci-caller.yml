@@ -3,13 +3,13 @@
 name: Rocky9-CI
 
 on:
-  push:
-    branches: [ "main" ]
-    paths-ignore:
-      - 'README.md'
-      - '**/*.md'
-      - .gitignore
-      - ./meta/main.yml
+  # push:
+  #   branches: [ "main" ]
+  #   paths-ignore:
+  #     - 'README.md'
+  #     - '**/*.md'
+  #     - .gitignore
+  #     - ./meta/main.yml
 
   pull_request:
     branches: [ "main" ]
