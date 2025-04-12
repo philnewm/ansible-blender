@@ -41,14 +41,16 @@ Elaborate external dependencies and how to use them.
 
 ## Role Variables
 
-* defaults/main.yml
-  * first_var
-  * sec_var
-  * third_var
-* vars/main.yml
-  * first_var
-  * sec_var
-  * third_var
+* `defaults/main.yml`
+  * state (str): Desired setup state
+  * default_version (bool): Set version in launcher
+  * gnome_favorite (bool): Add to Gnome favorites
+  * pipeline_dev (bool): Add pipeline development setup
+  * launcher: Launcher name per Linux OS family
+  * version: Split into major, minor and patch
+
+* `vars/main.yml`
+  * dependencies - to enable favorite setting on gnome desktop
 
 ## Dependencies
 
