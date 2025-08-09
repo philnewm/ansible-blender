@@ -1,5 +1,15 @@
 ---
 
+- name: Gather package facts
+  ansible.builtin.package_facts:
+
+- name: Test installed dependencies
+  loop: "{{ blender_dependencies[ansible_os_family] }}"
+  ansible.builtin.assert:
+    that: item in ansible_facts.packages
+    fail_msg: "Failed to find package {{ item }} in instaleld packages"
+    quiet: true
+
 - name: Get blender install
   ansible.builtin.stat:
     path: "{{ blender_install_path }}"
@@ -46,7 +56,7 @@
     that:
       - blender_symlink.stat.exists
       - blender_symlink.stat.islnk
-      - blender_symlink.stat.lnk_source == "{{ blender_install_path }}/blender"
+      - blender_symlink.stat.lnk_source == blender_install_path + '/blender'
     fail_msg: "Blender symlink stats are not as expected, found {{ blender_symlink.stat.lnk_source }}"
     quiet: true
 

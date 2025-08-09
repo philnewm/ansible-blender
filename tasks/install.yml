@@ -1,5 +1,18 @@
 ---
 
+- name: Update debian package cache
+  become: true
+  when: ansible_distribution == "Debian"
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install dependencies
+  become: true
+  loop: "{{ blender_dependencies[ansible_os_family] }}"
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+
 - name: Download blender tar-ball
   become: true
   ansible.builtin.get_url:

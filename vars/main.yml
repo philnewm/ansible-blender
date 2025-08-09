@@ -1,0 +1,21 @@
+---
+
+blender_dependencies:
+  RedHat:
+    - libX11
+    - libXrender
+    - libXfixes
+    - libXi
+    - libxkbcommon
+    - libSM
+    - libglvnd-glx
+  Debian:
+    - libx11-6
+    - libxrender1
+    - libxfixes3
+    - libxi6
+    - libxkbcommon0
+    - libsm6
+    - libgl1
+
+...
