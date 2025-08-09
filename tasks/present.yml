@@ -1,30 +1,22 @@
 ---
 
-# Install tasks
-# INFO larger roles should only use **include_tasks** here
-
 - name: Check for blender install
   ansible.builtin.stat:
-    path: "{{ install_path }}"
+    path: "{{ blender_install_path }}"
   register: blender_path
 
 - name: Install blender
   when: not blender_path.stat.exists
   ansible.builtin.include_tasks:
-    file: install.yml 
+    file: install.yml
 
-- name: Configure blender
-  ansible.builtin.include_tasks:
-    file: config.yml
-
-- name: Add to gnome favorites
-  when: gnome_favorite
-  ansible.builtin.include_tasks:
-    file: favorite.yml
-
-- name: Add python dev environment
-  when: pipeline_dev
-  ansible.builtin.include_tasks:
-    file: pipeline_dev.yml
+- name: Create symlink to executable
+  become: true
+  when: set_default_version
+  ansible.builtin.file:
+    src: "{{ blender_install_path }}/blender"
+    dest: "{{ user_symlink_path }}/blender"
+    state: link
+    force: true
 
 ...

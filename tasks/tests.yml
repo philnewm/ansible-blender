@@ -1,11 +1,8 @@
 ---
 
-# tests to verify role functionality
-
-
-- name: Check for blender install
+- name: Get blender install
   ansible.builtin.stat:
-    path: "{{ install_path }}"
+    path: "{{ blender_install_path }}"
   register: blender_path
 
 - name: Test install path
@@ -41,7 +38,7 @@
 
 - name: Get blender symlink
   ansible.builtin.stat:
-    path: "/usr/local/bin/blender"
+    path: "{{ user_symlink_path }}/blender"
   register: blender_symlink
 
 - name: Test symlink
@@ -49,13 +46,13 @@
     that:
       - blender_symlink.stat.exists
       - blender_symlink.stat.islnk
-      - blender_symlink.stat.lnk_source == "/opt/blender_4.2.3-x64/blender"
+      - blender_symlink.stat.lnk_source == "{{ blender_install_path }}/blender"
     fail_msg: "Blender symlink stats are not as expected, found {{ blender_symlink.stat.lnk_source }}"
     quiet: true
 
-- name: Get blender symlink
+- name: Get blender desktop launcher
   ansible.builtin.stat:
-    path: "/usr/share/applications/blender.desktop"
+    path: "{{ desktop_launcher_path }}/blender.desktop"
   register: blender_desktop
 
 - name: Test desktop launcher
@@ -63,82 +60,6 @@
     that:
       - blender_desktop.stat.exists
     fail_msg: "Blender desktop file does not exist"
-    quiet: true
-
-- name: Include gpu query
-  ansible.builtin.include_tasks:
-    file: gpu_query.yml
-
-- name: Query settings
-  loop: "{{ settings.keys() }}"
-  ansible.builtin.shell:
-    cmd: |
-      blender --background --python-expr "
-      import bpy;
-      print({{ item }})
-      " | sed -n '1p'
-  args:
-    executable: /bin/bash
-  register: settings_query
-  changed_when: false
-
-- name: Test settings
-  loop: "{{ settings_query.results }}"
-  loop_control:
-    label: "{{ item.item }}"
-  ansible.builtin.assert:
-    that: 
-      - settings[item.item] | from_yaml | string == item.stdout
-    fail_msg: "Expected {{ settings[item.item] }} but got {{ item.stdout }} for {{ item.item }}"
-    quiet: true
-
-- name: Query enabled addons
-  ansible.builtin.shell:
-    cmd: |
-      blender --background --python-expr "
-      import bpy;
-      print(bpy.context.preferences.addons.keys())
-      " | sed -n '1p'
-  changed_when: false
-  args:
-    executable: /bin/bash
-  register: enabled_addons
-
-- name: Test enable addons
-  loop: "{{ addons }}"
-  loop_control:
-    label: "{{ item }}"
-  ansible.builtin.assert:
-    that:
-      - item in enabled_addons.stdout | to_json
-    fail_msg: "Failed to find addon {{ item }}"
-    quiet: true
-
-- name: Get pip executable
-  ansible.builtin.stat:
-    path: "{{ pip_path }}"
-  register: pip_result
-
-- name: Test pip path
-  ansible.builtin.assert:
-    that:
-      - pip_result.stat.exists
-    fail_msg: "Pip executable not found at {{ pip_path }}"
-    quiet: true
-
-- name: Get installed blender python packages
-  ansible.builtin.shell:
-    cmd: "{{ pip_path }} list | awk '{if(NR>2) print $1}'"
-  register: python_packages
-  changed_when: false
-  failed_when: python_packages.rc != 0
-
-- name: Test installed blender python packages
-  loop: "{{ python_modules }}"
-  ansible.builtin.assert:
-    that:
-      - item in python_packages.stdout_lines
-    fail_msg: "Unable to find {{ item }} in pip packages for blender."
     quiet: true
 
 ...

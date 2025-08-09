@@ -5,11 +5,12 @@
   ansible.builtin.get_url:
     url: "https://download.blender.org/release/Blender{{ version_short }}/blender-{{ version_long }}-linux-{{ architecture }}.tar.xz"
     dest: /opt/
+    mode: "0644"
 
 - name: Create destination directory
   become: true
   ansible.builtin.file:
-    path: "{{ install_path }}"
+    path: "{{ blender_install_path }}"
     state: directory
     mode: '0755'
 
@@ -17,7 +18,7 @@
   become: true
   ansible.builtin.unarchive:
     src: "/opt/blender-{{ version_long }}-linux-{{ architecture }}.tar.xz"
-    dest: "{{ install_path }}"
+    dest: "{{ blender_install_path }}"
     remote_src: true
     extra_opts:
       - "--strip-components=1"
@@ -28,20 +29,12 @@
     path: "/opt/blender-{{ version_long }}-linux-{{ architecture }}.tar.xz"
     state: absent
 
-- name: Create symlink to executable
-  become: true
-  when: default_version
-  ansible.builtin.file:
-    src: "{{ install_path }}/blender"
-    dest: /usr/local/bin/blender
-    state: link
-    force: true
-
 - name: Copy launcher file
   become: true
   ansible.builtin.copy:
-    src: "{{ install_path }}/blender.desktop"
-    dest: "/usr/share/applications/blender.desktop"
-    remote_src: yes
+    src: "{{ blender_install_path }}/blender.desktop"
+    dest: "{{ desktop_launcher_path }}/blender.desktop"
+    remote_src: true
+    mode: "0644"
 
 ...
