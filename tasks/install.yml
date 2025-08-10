@@ -29,7 +29,7 @@
 
 - name: Ensure tar and xz are installed
   become: true
-  loop: "{{ unarchive_dependencies }}"
+  loop: "{{ unarchive_dependencies[ansible_os_family] }}"
   ansible.builtin.package:
     name: "{{ item }}"
     state: present

@@ -19,7 +19,11 @@ blender_dependencies:
     - libgl1
 
 unarchive_dependencies:
+  RedHat:
   - tar
   - xz
+  Debian:
+    - tar
+    - xz-utils
 
 ...
