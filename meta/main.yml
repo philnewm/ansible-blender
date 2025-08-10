@@ -3,7 +3,7 @@
 galaxy_info:
   role_name: blender
   author: philnewm
-  description: Install and configure blender default version.
+  description: Install blender per version.
   license: some_license
   min_ansible_version: "2.1"
   platforms:
