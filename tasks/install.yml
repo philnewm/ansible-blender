@@ -27,6 +27,13 @@
     state: directory
     mode: '0755'
 
+- name: Ensure tar and xz are installed
+  become: true
+  loop: "{{ unarchive_dependencies }}"
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+
 - name: Extract tar-ball
   become: true
   ansible.builtin.unarchive:

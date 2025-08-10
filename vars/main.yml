@@ -18,4 +18,8 @@ blender_dependencies:
     - libsm6
     - libgl1
 
+unarchive_dependencies:
+  - tar
+  - xz
+
 ...
