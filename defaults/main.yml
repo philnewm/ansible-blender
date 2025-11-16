@@ -11,6 +11,8 @@ version_long: "{{ version.major }}.{{ version.minor }}.{{ version.patch }}"
 version_short: "{{ version.major }}.{{ version.minor }}"
 architecture: "x64"
 
+blender_source_url: "https://download.blender.org/release/Blender{{ version_short }}/blender-{{ version_long }}-linux-{{ architecture }}.tar.xz"
+
 blender_install_path: "/opt/blender/{{ version_long }}_{{ architecture }}"
 blender_python_version: "3.11"
 blender_builtin_python_path: "{{ blender_install_path }}/{{ version_short }}/python/bin/python{{ python_version }}"

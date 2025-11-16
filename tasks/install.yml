@@ -16,7 +16,7 @@
 - name: Download blender tar-ball
   become: true
   ansible.builtin.get_url:
-    url: "https://download.blender.org/release/Blender{{ version_short }}/blender-{{ version_long }}-linux-{{ architecture }}.tar.xz"
+    url: "{{ blender_source_url }}"
     dest: /opt/
     mode: "0644"
 
