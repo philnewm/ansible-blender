@@ -36,7 +36,7 @@
 
 - name: Get blender tar-ball
   ansible.builtin.stat:
-    path: "/opt/blender-{{ version_long }}-linux-{{ architecture }}.tar.xz"
+    path: "{{ blender_download_path }}"
   register: blender_tar_ball
 
 - name: Test tar-ball removed

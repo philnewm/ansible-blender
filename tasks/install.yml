@@ -17,7 +17,7 @@
   become: true
   ansible.builtin.get_url:
     url: "{{ blender_source_url }}"
-    dest: /opt/
+    dest: "{{ blender_download_path }}"
     mode: "0644"
 
 - name: Create destination directory
@@ -37,7 +37,7 @@
 - name: Extract tar-ball
   become: true
   ansible.builtin.unarchive:
-    src: "/opt/blender-{{ version_long }}-linux-{{ architecture }}.tar.xz"
+    src: "{{ blender_download_path }}"
     dest: "{{ blender_install_path }}"
     remote_src: true
     extra_opts:
@@ -46,7 +46,7 @@
 - name: Cleanup tar-ball
   become: true
   ansible.builtin.file:
-    path: "/opt/blender-{{ version_long }}-linux-{{ architecture }}.tar.xz"
+    path: "{{ blender_download_path }}"
     state: absent
 
 - name: Copy launcher file
