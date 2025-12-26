@@ -6,7 +6,7 @@ set_default_version: true
 # TODO allow vars based adjustment
 blender_major_version: 5
 blender_minor_version: 0
-blender_patch_version: 0
+blender_patch_version: 1
 blender_version_long: "{{ blender_major_version }}.{{ blender_minor_version }}.{{ blender_patch_version }}"
 blender_version_short: "{{ blender_major_version }}.{{ blender_minor_version }}"
 blender_architecture: "x64"

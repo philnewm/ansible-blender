@@ -4,10 +4,10 @@
   ansible.builtin.package_facts:
 
 - name: Test installed dependencies
-  loop: "{{ blender_dependencies[ansible_os_family] }}"
+  loop: "{{ blender_dependencies[ansible_facts.os_family] }}"
   ansible.builtin.assert:
     that: item in ansible_facts.packages
-    fail_msg: "Failed to find package {{ item }} in instaleld packages"
+    fail_msg: "Failed to find package {{ item }} in installed packages"
     quiet: true
 
 - name: Get blender install

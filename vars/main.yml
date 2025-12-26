@@ -20,10 +20,13 @@ blender_dependencies:
 
 unarchive_dependencies:
   RedHat:
-  - tar
-  - xz
+    - tar
+    - xz
   Debian:
     - tar
     - xz-utils
+    - gzip
+    - bzip2
+    - zstd
 
 ...
