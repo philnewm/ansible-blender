@@ -60,6 +60,13 @@ tasks:
       name: ansible-blender
     vars:
       state: present
+      set_default_version: true
+      blender_major_version: 5
+      blender_minor_version: 0
+      blender_patch_version: 1
+      blender_architecture: "x64"
+      blender_source_url: "https://download.blender.org/release/Blender{{ blender_version_short }}/blender-{{ blender_version_long }}-linux-{{ blender_architecture }}.tar.xz"
+      blender_install_path: "/opt/blender/{{ blender_version_long }}_{{ blender_architecture }}"
 
 ...
 ```
