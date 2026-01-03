@@ -19,9 +19,4 @@
     path: "{{ desktop_launcher_path }}/blender.desktop"
     state: absent
 
-- name: Remove unused dependencies
-  become: true
-  ansible.builtin.package:
-    autoremove: true
-
 ...
