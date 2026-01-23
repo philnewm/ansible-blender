@@ -1,0 +1,26 @@
+---
+
+- name: Install pip module dependency
+  become: true
+  ansible.builtin.package:
+    name:
+      - python3-packaging
+      - python3-setuptools
+    state: present
+
+- name: Ensure Blender dev virtualenv exists with latest pip
+  become: true
+  ansible.builtin.pip:
+    name: pip
+    state: latest
+    virtualenv: "{{ blender_venv_path }}"
+    virtualenv_command: "{{ blender_builtin_python_path }} -m venv"
+
+- name: Install blender dev packages
+  become: true
+  loop: "{{ blender_python_modules }}"
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    virtualenv: "{{ blender_venv_path }}"
+
+...

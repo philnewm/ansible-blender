@@ -72,4 +72,40 @@
     fail_msg: "Blender desktop file does not exist"
     quiet: true
 
+- name: Test development setup
+  when: blender_pipeline_dev
+  block:
+    - name: Check if blender python virtual environment exists
+      become: true
+      ansible.builtin.stat:
+        path: "{{ blender_venv_path }}"
+      register: venv_stat
+
+    - name: Assert that virtual environment directory exists
+      ansible.builtin.assert:
+        that:
+          - venv_stat.stat.exists
+          - venv_stat.stat.isdir
+        fail_msg: "Virtual environment directory does not exist at {{ blender_venv_path }}"
+        quiet: true
+
+    - name: Get list of installed Python packages in the venv
+      become: true
+      ansible.builtin.command:
+        cmd: "{{ blender_venv_path }}/bin/pip list --format=json"
+      register: pip_list
+      changed_when: false
+
+    - name: Parse installed packages
+      ansible.builtin.set_fact:
+        installed_packages: "{{ pip_list.stdout | from_json | map(attribute='name') | list }}"
+
+    - name: Assert expected Python packages are installed
+      loop: "{{ blender_python_modules }}"
+      ansible.builtin.assert:
+        that:
+          - (item.split('==')[0]) in installed_packages
+        fail_msg: "Failed to find python module {{ item }} in environment '{{ blender_venv_path }}'"
+        quiet: true
+
 ...
