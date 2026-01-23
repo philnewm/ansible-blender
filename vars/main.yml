@@ -1,5 +1,7 @@
 ---
 
+blender_mirror_src_url: "https://download.blender.org/release/Blender{{ blender_version_short }}/blender-{{ blender_version_long }}-linux-{{ blender_architecture }}.tar.xz"
+
 blender_dependencies:
   RedHat:
     - libX11

@@ -1,5 +1,16 @@
 ---
 
+- name: Verify blender version
+  when: blender_source_url != blender_mirror_src_url
+  ansible.builtin.assert:
+    that:
+      - "'blender-' ~ blender_version_long ~ '-linux' in blender_source_url"
+    fail_msg: |
+      Failed to find requested version 'blender-{{ blender_version_long }}-linux' in {{ blender_source_url }}.
+
+      Is this the intended source?
+    quiet: true
+
 - name: Check for blender install
   ansible.builtin.stat:
     path: "{{ blender_install_path }}"

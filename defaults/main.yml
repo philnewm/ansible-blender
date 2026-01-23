@@ -10,7 +10,6 @@ blender_version_long: "{{ blender_major_version }}.{{ blender_minor_version }}.{
 blender_version_short: "{{ blender_major_version }}.{{ blender_minor_version }}"
 blender_architecture: "x64"
 
-blender_mirror_src_url: "https://download.blender.org/release/Blender{{ blender_version_short }}/blender-{{ blender_version_long }}-linux-{{ blender_architecture }}.tar.xz"
 blender_source_url: "{{ blender_mirror_src_url }}"
 blender_download_path: "/opt/blender-{{ blender_version_long }}-linux-{{ blender_architecture }}.tar.xz"
 
