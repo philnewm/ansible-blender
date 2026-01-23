@@ -1,0 +1,96 @@
+---
+
+- name: Ensure system-wide config directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ blender_system_config }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Query blender settings
+  become: true
+  environment:
+    BLENDER_USER_CONFIG: "{{ blender_system_config }}"
+  loop: "{{ blender_settings.keys() }}"
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      {{ blender_install_path }}/blender --background --python-expr "import bpy; print({{ item }})" | sed -n '1p'
+  args:
+    executable: /bin/bash
+  register: settings_output
+  changed_when: false
+
+- name: Apply custom blender settings
+  become: true
+  environment:
+    BLENDER_USER_CONFIG: "{{ blender_system_config }}"
+  loop: "{{ settings_output.results }}"
+  loop_control:
+    loop_var: setting
+    label: "{{ setting.item }}"
+  when: blender_settings[setting.item] | trim != setting.stdout | trim
+  ansible.builtin.shell:
+    cmd: >
+      {{ blender_install_path }}/blender --background --python-expr "{{ 'import bpy; {} = {}; bpy.ops.wm.save_userpref()'.format(
+        setting.item,
+        blender_settings[setting.item] if blender_settings[setting.item] is number or blender_settings[setting.item] is boolean else '\"' ~ blender_settings[setting.item] ~ '\"'
+      ) }}"
+  register: apply_settings
+  changed_when: apply_settings.rc == 0
+
+- name: Query enabled addons
+  become: true
+  environment:
+    BLENDER_USER_CONFIG: "{{ blender_system_config }}"
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      {{ blender_install_path }}/blender --background --python-expr "
+      import bpy;
+      print(bpy.context.preferences.addons.keys())
+      " | sed -n '1p'
+  changed_when: false
+  args:
+    executable: /bin/bash
+  register: enabled_addons
+
+- name: Enable addons
+  become: true
+  environment:
+    BLENDER_USER_CONFIG: "{{ blender_system_config }}"
+  loop: "{{ blender_addons }}"
+  loop_control:
+    label: "{{ item }}"
+  when: item not in enabled_addons.stdout | to_json
+  ansible.builtin.command:
+    cmd: |
+      {{ blender_install_path }}/blender --background --python-expr "
+      import bpy;
+      bpy.ops.preferences.addon_enable(module='{{ item }}');
+      bpy.ops.wm.save_userpref()"
+  register: enable_addons
+  changed_when: enable_addons.rc == 0
+
+- name: Ensure blender skel config directory exists
+  become: true
+  ansible.builtin.file:
+    path: "{{ blender_skel_config }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Set user default preferences
+  become: true
+  ansible.builtin.copy:
+    src: "{{ blender_system_config }}/userpref.blend"
+    dest: "{{ blender_skel_config }}/userpref.blend"
+    remote_src: true
+    owner: root
+    group: root
+    mode: "0644"
+
+...

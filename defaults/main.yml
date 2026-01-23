@@ -10,14 +10,66 @@ blender_version_long: "{{ blender_major_version }}.{{ blender_minor_version }}.{
 blender_version_short: "{{ blender_major_version }}.{{ blender_minor_version }}"
 blender_architecture: "x64"
 
-blender_source_url: "https://download.blender.org/release/Blender{{ blender_version_short }}/blender-{{ blender_version_long }}-linux-{{ blender_architecture }}.tar.xz"
+blender_mirror_src_url: "https://download.blender.org/release/Blender{{ blender_version_short }}/blender-{{ blender_version_long }}-linux-{{ blender_architecture }}.tar.xz"
+blender_source_url: "{{ blender_mirror_src_url }}"
 blender_download_path: "/opt/blender-{{ blender_version_long }}-linux-{{ blender_architecture }}.tar.xz"
 
 blender_install_path: "/opt/blender/{{ blender_version_long }}_{{ blender_architecture }}"
+blender_system_config: "{{ blender_install_path }}/{{ blender_version_short }}/config"
+blender_skel_dir: "/etc/skel/.config/blender"
+blender_skel_config: "{{ blender_skel_dir }}/{{ blender_version_short }}/config"
 blender_python_version: "3.11"
-blender_builtin_python_path: "{{ blender_install_path }}/{{ blender_version_short }}/python/bin/python{{ python_version }}"
-blender_pip_path: "{{ blender_install_path }}/{{ blender_version_short }}/python/bin/pip{{ python_version }}"
+blender_builtin_python_path: "{{ blender_install_path }}/{{ blender_version_short }}/python/bin/python{{ blender_python_version }}"
+blender_pip_path: "{{ blender_install_path }}/{{ blender_version_short }}/python/bin/pip{{ blender_python_version }}"
 desktop_launcher_path: "/usr/share/applications"
 user_symlink_path: "/usr/local/bin"
+
+cycles_gpu_backend:
+  - name: "OPTIX"
+    lib: "libnvoptix.so"
+  - name: "CUDA"
+    lib: "libcuda.so"
+  - name: "HIP"
+    lib: "libamdhip64.so"
+  - name: "ONEAPI"
+    lib: "libze_loader.so"
+
+blender_settings:
+  "bpy.context.preferences.view.show_splash": False
+  "bpy.context.preferences.view.show_developer_ui": False
+  "bpy.context.preferences.view.show_tooltips_python": False
+  "bpy.context.preferences.view.ui_line_width": "AUTO"
+  "bpy.context.preferences.edit.use_negative_frames": True
+  "bpy.context.preferences.themes['Default'].view_3d.vertex_size": 5
+  "bpy.context.preferences.themes['Default'].view_3d.grid[0]": 0.364705890417099
+  "bpy.context.preferences.themes['Default'].view_3d.grid[1]": 0.44705885648727417
+  "bpy.context.preferences.themes['Default'].view_3d.grid[2]": 0.49803924560546875
+  "bpy.context.preferences.themes['Default'].view_3d.grid[3]": 0.10588236153125763
+  "bpy.context.preferences.themes['Default'].view_3d.space.gradients.background_type": "LINEAR"
+  # Note using "bpy.context.preferences.themes['Default'].view_3d.space.gradients.high_gradient.hsv" caused idempotence issues
+  "bpy.context.preferences.themes['Default'].view_3d.space.gradients.high_gradient.r": 0.20000001788139343
+  "bpy.context.preferences.themes['Default'].view_3d.space.gradients.high_gradient.g": 0.011764707043766975
+  "bpy.context.preferences.themes['Default'].view_3d.space.gradients.high_gradient.b": 0.250980406999588
+  "bpy.context.preferences.themes['Default'].view_3d.space.gradients.gradient.r": 0.03921568766236305
+  "bpy.context.preferences.themes['Default'].view_3d.space.gradients.gradient.g": 0.18039216101169586
+  "bpy.context.preferences.themes['Default'].view_3d.space.gradients.gradient.b": 0.23137256503105164
+  "bpy.context.preferences.edit.undo_steps": 512
+  "bpy.context.preferences.filepaths.save_version": 10
+  "bpy.context.preferences.addons['cycles'].preferences.compute_device_type": "{{ cycles_compute_device | default('NONE')}}"
+
+blender_addons:
+  - "node_wrangler"
+  - "cycles"
+
+cycles_compute_device_type:
+  "Advanced Micro Devices, Inc. [AMD/ATI]": "'HIP'"
+  "NVIDIA Corporation": "'OPTIX'"
+  "Intel Corporation": "'ONEAPI'"
+
+blender_pipeline_dev: true
+blender_venv_path: "/etc/skel/python_venv/blender_venv"
+blender_python_modules:
+  - "bpy=={{ blender_version_long }}"
+  - fake-bpy-module-latest
 
 ...

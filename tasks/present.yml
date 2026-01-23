@@ -19,4 +19,29 @@
     state: link
     force: true
 
+- name: Check for GPU backend libraries
+  loop: "{{ cycles_gpu_backend }}"
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      ldconfig -p | grep -q {{ item.lib }}
+  args:
+    executable: /bin/bash
+  register: gpu_backend_check
+  failed_when: gpu_backend_check.rc not in [0, 1]
+  changed_when: false
+
+- name: Determine best GPU backend
+  ansible.builtin.set_fact:
+    cycles_compute_device: "{{ (cycles_gpu_backend | zip(gpu_backend_check.results) | selectattr('1.rc', 'equalto', 0) | map('first') | first).name | default('NONE') }}"
+
+- name: Configure blender
+  ansible.builtin.include_tasks:
+    file: config.yml
+
+- name: Setup blender dev env
+  when: blender_pipeline_dev
+  ansible.builtin.include_tasks:
+    file: development_setup.yml
+
 ...

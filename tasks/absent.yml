@@ -19,4 +19,12 @@
     path: "{{ desktop_launcher_path }}/blender.desktop"
     state: absent
 
+- name: Ensure blender skel directory and venv are removed
+  become: true
+  ansible.builtin.file:
+    path:
+      - "{{ blender_skel_dir }}"
+      - "{{ blender_venv_path }}"
+    state: absent
+
 ...
