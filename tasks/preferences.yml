@@ -9,11 +9,11 @@
     group: root
     mode: "0755"
 
-- name: Query blender settings
+- name: Query blender preferences
   become: true
   environment:
     BLENDER_USER_CONFIG: "{{ blender_system_config }}"
-  loop: "{{ blender_settings.keys() }}"
+  loop: "{{ blender_preferences.keys() }}"
   ansible.builtin.shell:
     cmd: |
       set -o pipefail
@@ -23,7 +23,7 @@
   register: settings_output
   changed_when: false
 
-- name: Apply custom blender settings
+- name: Apply custom blender preferences
   become: true
   environment:
     BLENDER_USER_CONFIG: "{{ blender_system_config }}"
@@ -31,12 +31,12 @@
   loop_control:
     loop_var: setting
     label: "{{ setting.item }}"
-  when: blender_settings[setting.item] | trim != setting.stdout | trim
+  when: blender_preferences[setting.item] | trim != setting.stdout | trim
   ansible.builtin.shell:
     cmd: >
       {{ blender_install_path }}/blender --background --python-expr "{{ 'import bpy; {} = {}; bpy.ops.wm.save_userpref()'.format(
         setting.item,
-        blender_settings[setting.item] if blender_settings[setting.item] is number or blender_settings[setting.item] is boolean else '\"' ~ blender_settings[setting.item] ~ '\"'
+        blender_preferences[setting.item] if blender_preferences[setting.item] is number or blender_preferences[setting.item] is boolean else '\"' ~ blender_preferences[setting.item] ~ '\"'
       ) }}"
   register: apply_settings
   changed_when: apply_settings.rc == 0
