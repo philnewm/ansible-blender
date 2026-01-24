@@ -27,4 +27,10 @@
       - "{{ blender_venv_path }}"
     state: absent
 
+- name: "Ensure blender user directory is removed from {{ ansible_facts.ansible_ssh_user }}"
+  when: blender_preferences_ansible_ssh_user
+  ansible.builtin.file:
+    path: "{{ ansible_facts.user_dir }}/.config/blender/{{ blender_version_short }}"
+    state: absent
+
 ...

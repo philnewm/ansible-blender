@@ -93,4 +93,20 @@
     group: root
     mode: "0644"
 
+- name: "Write preferences for {{ ansible_ssh_user }}"
+  when: blender_preferences_ansible_ssh_user
+  block:
+    - name: Ensure blender config directory exists
+      ansible.builtin.file:
+        path: "{{ ansible_facts.user_dir }}/.config/blender/{{ blender_version_short }}/config"
+        state: directory
+        mode: "0755"
+
+    - name: Set user default preferences
+      ansible.builtin.copy:
+        src: "{{ blender_system_config }}/userpref.blend"
+        dest: "{{ ansible_facts.user_dir }}/.config/blender/{{ blender_version_short }}/config/userpref.blend"
+        remote_src: true
+        mode: "0644"
+
 ...
