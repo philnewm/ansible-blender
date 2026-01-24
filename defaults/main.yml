@@ -33,7 +33,8 @@ cycles_gpu_backend:
   - name: "ONEAPI"
     lib: "libze_loader.so"
 
-blender_settings:
+blender_include_preferences: true
+blender_preferences:
   "bpy.context.preferences.view.show_splash": False
   "bpy.context.preferences.view.show_developer_ui": False
   "bpy.context.preferences.view.show_tooltips_python": False

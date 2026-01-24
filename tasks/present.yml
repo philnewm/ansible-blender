@@ -47,8 +47,9 @@
     cycles_compute_device: "{{ (cycles_gpu_backend | zip(gpu_backend_check.results) | selectattr('1.rc', 'equalto', 0) | map('first') | first).name | default('NONE') }}"
 
 - name: Configure blender
+  when: blender_include_preferences
   ansible.builtin.include_tasks:
-    file: config.yml
+    file: preferences.yml
 
 - name: Setup blender dev env
   when: blender_pipeline_dev
