@@ -1,6 +1,6 @@
 ---
 
-name: Alma9
+name: AlmaLinux9
 
 on:
   push:
