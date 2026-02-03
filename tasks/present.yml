@@ -1,5 +1,8 @@
 ---
 
+- name: Gather facts
+  ansible.builtin.setup:
+
 - name: Verify blender version
   when: blender_source_url != blender_mirror_src_url
   ansible.builtin.assert:

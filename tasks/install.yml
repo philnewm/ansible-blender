@@ -8,9 +8,8 @@
 
 - name: Install dependencies
   become: true
-  loop: "{{ blender_dependencies[ansible_facts.os_family] }}"
   ansible.builtin.package:
-    name: "{{ item }}"
+    name: "{{ blender_dependencies[ansible_facts.os_family] }}"
     state: present
 
 - name: Download blender tar-ball
@@ -33,9 +32,8 @@
 
 - name: Ensure unarchive dependencies are installed
   become: true
-  loop: "{{ unarchive_dependencies[ansible_facts.os_family] }}"
   ansible.builtin.package:
-    name: "{{ item }}"
+    name: "{{ unarchive_dependencies[ansible_facts.os_family] }}"
     state: present
 
 - name: Extract tar-ball
