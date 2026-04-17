@@ -4,7 +4,7 @@ state: present
 set_default_version: true
 
 blender_major_version: 5
-blender_minor_version: 0
+blender_minor_version: 1
 blender_patch_version: 1
 blender_version_long: "{{ blender_major_version }}.{{ blender_minor_version }}.{{ blender_patch_version }}"
 blender_version_short: "{{ blender_major_version }}.{{ blender_minor_version }}"
@@ -17,9 +17,7 @@ blender_install_path: "/opt/blender/{{ blender_version_long }}_{{ blender_archit
 blender_system_config: "{{ blender_install_path }}/{{ blender_version_short }}/config"
 blender_skel_dir: "/etc/skel/.config/blender"
 blender_skel_config: "{{ blender_skel_dir }}/{{ blender_version_short }}/config"
-blender_python_version: "3.11"
-blender_builtin_python_path: "{{ blender_install_path }}/{{ blender_version_short }}/python/bin/python{{ blender_python_version }}"
-blender_pip_path: "{{ blender_install_path }}/{{ blender_version_short }}/python/bin/pip{{ blender_python_version }}"
+blender_executable: "{{ blender_install_path }}/blender"
 desktop_launcher_path: "/usr/share/applications"
 user_symlink_path: "/usr/local/bin"
 

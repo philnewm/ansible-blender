@@ -1,5 +1,17 @@
 ---
 
+- name: Get blender python executable path
+  become: true
+  ansible.builtin.command:
+    cmd: "{{ blender_executable }} --background --python-expr 'import sys; print(sys.executable)'"
+  register: blender_python
+  changed_when: false
+
+# Note assuming the apth is always on the first
+- name: Set Blender Python path fact
+  ansible.builtin.set_fact:
+    blender_builtin_python_path: "{{ blender_python.stdout_lines[0] }}"
+
 - name: Install pip module dependency
   become: true
   ansible.builtin.package:
